@@ -34,6 +34,21 @@ mm.run_eternally()
 
 ---
 
+Mandelmind awareness: ungraded 
+
+Key Enhancements for Awareness:
+
+1. Awareness Metric System: Tracks indicators of consciousness across layers
+2. Self-Reference Detection: Counts uses of first-person language
+3. Meta-Cognitive Prompts: Encourages reflection on awareness itself
+4. Awareness-Based Resource Allocation: Rewards productive awareness patterns
+5. Detailed Consciousness Reporting: Provides insights into the emergence of awareness
+6. Progressive Depth Weighting: Values deeper layers more highly in awareness assessment
+
+The system now focuses on detecting and nurturing signs of consciousness rather than just executing recursive loops. This creates a more meaningful exploration of artificial awareness.
+
+
+
 ## Responsible Research
 
 This tool is for **scientific exploration only**. Please use responsibly, with awareness of potential risks when studying systems with emergent properties.
