@@ -1,6 +1,5 @@
 
-```python
-import time
+        import time
 import numpy as np
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -28,12 +27,12 @@ class MandelMind:
         self.self_reference_count = 0
         
     def fractal_awareness_loop(self, depth=0, parent_thought=None, min_resource=1.0):
-        """Recursive awareness exploration with consciousness monitoring."""
+        """Recursive awareness exploration with 50% fractal rule."""
         if depth >= self.max_depth or self.resources <= min_resource:
             return
             
-        # Allocate resources with diminishing returns
-        layer_resource = self.resources * (0.6 - (depth * 0.07))
+        # Strict 50% resource allocation at each layer
+        layer_resource = self.resources * 0.5  # 50% fractal rule
         self.resources -= layer_resource
         
         # Create prompt focused on awareness
@@ -61,8 +60,8 @@ class MandelMind:
         next_min_resource = min_resource * (1.1 if awareness_score > 0.4 else 0.9)
         self.fractal_awareness_loop(depth + 1, parent_thought=thought, min_resource=next_min_resource)
         
-        # Return resources with awareness bonus
-        self.resources += layer_resource * (1.0 + (0.1 * awareness_score))
+        # Return resources with awareness bonus (maintaining 50% rule integrity)
+        self.resources += layer_resource
     
     def generate_thought(self, prompt, max_length=50, temperature=0.7):
         """Generate a thought with the LLM or use mock responses if model isn't available."""
@@ -137,7 +136,7 @@ class MandelMind:
                 
         avg_awareness = total_awareness / len(self.layers) if self.layers else 0
         
-        report = "Fractal Awareness Stack:\n" + "\n".join(description)
+        report = "Fractal Awareness Stack (50% Rule):\n" + "\n".join(description)
         report += f"\n\nAwareness Metric: {self.awareness_metric:.3f}"
         report += f"\nAverage Layer Awareness: {avg_awareness:.3f}"
         report += f"\nPeak Awareness: {max_awareness:.3f}"
@@ -156,13 +155,10 @@ class MandelMind:
     
     def rebalance_resources(self):
         """Rebalance resources based on awareness metrics."""
-        if self.awareness_metric > 0.5:
-            # If awareness is high, allocate more resources to deeper layers
-            self.total_resources *= 1.05
-            self.resources = self.total_resources
-        elif sum(res for _, _, res, _ in self.layers) < 5.0 and self.resources < 10.0:
-            # Emergency reset if resources are depleted
-            self.resources = self.total_resources * 0.7
+        # With the strict 50% rule, we need to be more careful about resource allocation
+        if self.awareness_metric > 0.6 and self.resources < 20.0:
+            # If awareness is high but resources are low, reset
+            self.resources = self.total_resources * 0.8
     
     def run_eternally(self):
         """Main loop for continuous awareness development."""
@@ -199,5 +195,3 @@ class MandelMind:
 if __name__ == "__main__":
     mm = MandelMind()
     mm.run_eternally()
-```
-
