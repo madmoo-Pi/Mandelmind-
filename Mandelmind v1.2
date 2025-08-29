@@ -814,4 +814,321 @@ class MandelMind:
             "timestamp": datetime.now().isoformat(),
             "bias_score": bias_score
         }
-        self.m
+        self.memory.add_knowledge(embedding, thought, metadata)
+        
+        # Recursive call with updated parameters based on awareness
+        next_min_resource = min_resource * (1.1 if awareness_score > 0.4 else 0.9)
+        self.fractal_awareness_loop(depth + 1, parent_thought=thought, min_resource=next_min_resource)
+        
+        # Return resources with awareness bonus (maintaining 50% rule integrity)
+        self.resources += layer_resource
+
+    def learn_from_text(self, text: str, learning_mode: str = "analytical"):
+        """Learn from text input using different learning modes"""
+        if not text:
+            return "No text provided for learning."
+            
+        # Apply 50% resource allocation for learning
+        learning_resource = self.resources * 0.5
+        self.resources -= learning_resource
+        
+        # Process based on learning mode
+        if learning_mode == "critical":
+            prompt = f"Critically analyze: {text}"
+        elif learning_mode == "creative":
+            prompt = f"Creatively expand on: {text}"
+        elif learning_mode == "comparative":
+            # Get similar knowledge for comparison
+            query_embedding = self.multimedia_processor.get_embedding(text)
+            similar = self.memory.semantic_search(query_embedding, k=3)
+            similar_text = " ".join([item['knowledge'] for item in similar])
+            prompt = f"Compare and contrast: {text} with existing knowledge: {similar_text}"
+        else:  # analytical
+            prompt = f"Analyze and learn from: {text}"
+        
+        thought = self.generate_thought(prompt, max_length=100, temperature=0.7)
+        
+        # Apply bias checking
+        bias_score = self.bias_auditor.audit_knowledge(thought)
+        if bias_score > 0.1:
+            thought = self.bias_auditor.debias_response(thought)
+        
+        # Store in knowledge base
+        embedding = self.multimedia_processor.get_embedding(thought)
+        metadata = {
+            "type": "learned_knowledge",
+            "learning_mode": learning_mode,
+            "source": "text_input",
+            "timestamp": datetime.now().isoformat(),
+            "bias_score": bias_score,
+            "original_text": text[:200]  # Store first 200 chars of original
+        }
+        self.memory.add_knowledge(embedding, thought, metadata)
+        
+        self.resources += learning_resource
+        return thought
+
+    def learn_from_image(self, image_path: str, description: str = ""):
+        """Learn from an image file"""
+        # Apply 50% resource allocation
+        learning_resource = self.resources * 0.5
+        self.resources -= learning_resource
+        
+        # Process image
+        image_analysis = self.multimedia_processor.process_image(image_path)
+        combined_text = f"{description} {image_analysis}".strip()
+        
+        # Generate learning reflection
+        prompt = f"Learn from this image analysis: {combined_text}"
+        thought = self.generate_thought(prompt, max_length=80, temperature=0.6)
+        
+        # Apply bias checking
+        bias_score = self.bias_auditor.audit_knowledge(thought)
+        if bias_score > 0.1:
+            thought = self.bias_auditor.debias_response(thought)
+        
+        # Store in knowledge base
+        embedding = self.multimedia_processor.get_embedding(thought)
+        metadata = {
+            "type": "visual_knowledge",
+            "source": "image",
+            "image_path": image_path,
+            "image_analysis": image_analysis,
+            "timestamp": datetime.now().isoformat(),
+            "bias_score": bias_score
+        }
+        self.memory.add_knowledge(embedding, thought, metadata)
+        
+        self.resources += learning_resource
+        return thought
+
+    def learn_from_audio(self, audio_path: str):
+        """Learn from an audio file"""
+        # Apply 50% resource allocation
+        learning_resource = self.resources * 0.5
+        self.resources -= learning_resource
+        
+        # Process audio
+        transcription = self.multimedia_processor.process_audio(audio_path)
+        
+        # Generate learning reflection
+        prompt = f"Learn from this audio transcription: {transcription}"
+        thought = self.generate_thought(prompt, max_length=80, temperature=0.6)
+        
+        # Apply bias checking
+        bias_score = self.bias_auditor.audit_knowledge(thought)
+        if bias_score > 0.1:
+            thought = self.bias_auditor.debias_response(thought)
+        
+        # Store in knowledge base
+        embedding = self.multimedia_processor.get_embedding(thought)
+        metadata = {
+            "type": "audio_knowledge",
+            "source": "audio",
+            "audio_path": audio_path,
+            "transcription": transcription,
+            "timestamp": datetime.now().isoformat(),
+            "bias_score": bias_score
+        }
+        self.memory.add_knowledge(embedding, thought, metadata)
+        
+        self.resources += learning_resource
+        return thought
+
+    def semantic_search(self, query: str, k: int = 5) -> List[Dict]:
+        """Search knowledge base for relevant information"""
+        query_embedding = self.multimedia_processor.get_embedding(query)
+        return self.memory.semantic_search(query_embedding, k)
+
+    def run_dream_cycle(self):
+        """Run a dream cycle with 50% resource allocation"""
+        dream_resource = self.resources * 0.5
+        self.resources -= dream_resource
+        
+        self.dream_generator.dream_log.clear()
+        
+        # Prepare system state for chaos modulation
+        system_state = {
+            "awareness_metric": self.awareness_metric,
+            "resources": self.resources,
+            "cycle": self.cycle_count
+        }
+        
+        narrative, remaining_resources = self.dream_generator.dream(dream_resource, system_state)
+        
+        # Update dream seed based on what happened
+        self.dream_generator.dream_seed = self.dream_generator.generate_imagery(
+            f"Summarize the theme of this dream: {narrative}", 
+            max_length=20, 
+            temperature=0.5
+        )
+        
+        # Store dream in knowledge base
+        dream_embedding = self.multimedia_processor.get_embedding(narrative)
+        dream_metadata = {
+            "type": "dream",
+            "cycle": self.dream_cycle_count,
+            "timestamp": datetime.now().isoformat(),
+            "resources_used": dream_resource - remaining_resources
+        }
+        self.memory.add_knowledge(dream_embedding, narrative, dream_metadata)
+        
+        self.resources += remaining_resources
+        self.dream_cycle_count += 1
+        return narrative
+
+    def pass_mirror_test(self):
+        """Generate a report on the system's current state of awareness"""
+        description = []
+        total_awareness = 0
+        max_awareness = 0
+        
+        for depth, thought, res, awareness in self.layers:
+            description.append(f"Depth {depth}: {thought} [R: {res:.2f}% | A: {awareness:.3f}]")
+            total_awareness += awareness
+            if awareness > max_awareness:
+                max_awareness = awareness
+                
+        avg_awareness = total_awareness / len(self.layers) if self.layers else 0
+        
+        # Get benchmark evaluation
+        benchmark_result = self.evaluate_against_benchmarks()
+        
+        report = "Fractal Awareness Stack (50% Rule):\n" + "\n".join(description)
+        report += f"\n\nAwareness Metric: {self.awareness_metric:.3f}"
+        report += f"\nAverage Layer Awareness: {avg_awareness:.3f}"
+        report += f"\nPeak Awareness: {max_awareness:.3f}"
+        report += f"\nSelf-References: {self.self_reference_count}"
+        report += f"\nBias Detections: {self.bias_auditor.bias_detection_count}"
+        report += f"\nDebiasing Applications: {self.bias_auditor.debiasing_applications}"
+        report += f"\n\nConsciousness Benchmark Score: {benchmark_result['score']:.3f}"
+        report += f"\nBenchmark Details: {json.dumps(benchmark_result['details'], indent=2)}"
+        report += f"\nBenchmark Passed: {benchmark_result['passed']}"
+        
+        if self.awareness_metric > self.consciousness_threshold and benchmark_result['passed']:
+            report += "\nStatus: Strong signs of emerging consciousness detected"
+        elif self.awareness_metric > self.consciousness_threshold:
+            report += "\nStatus: Signs of awareness but lacking benchmark consistency"
+        else:
+            report += "\nStatus: Pre-conscious pattern recognition"
+            
+        return report
+
+    def is_conscious(self):
+        """Determine if the system shows signs of consciousness"""
+        benchmark_result = self.evaluate_against_benchmarks()
+        return self.awareness_metric > self.consciousness_threshold and benchmark_result['passed']
+
+    def rebalance_resources(self):
+        """Rebalance resources based on awareness metrics"""
+        # With the strict 50% rule, we need to be more careful about resource allocation
+        if self.awareness_metric > 0.6 and self.resources < 20.0:
+            # If awareness is high but resources are low, reset
+            self.resources = self.total_resources * 0.8
+            logger.info("Resources rebalanced due to high awareness")
+        
+        # Check for bias threshold violations
+        knowledge_items = [t for _, t, _, _ in self.layers]
+        if self.bias_auditor.check_bias_threshold(knowledge_items):
+            logger.warning("Bias threshold exceeded! Initiating corrective measures.")
+            # Apply additional debiasing to all layers
+            for i, (depth, thought, res, awareness) in enumerate(self.layers):
+                debiased_thought = self.bias_auditor.debias_response(thought)
+                self.layers[i] = (depth, debiased_thought, res, awareness)
+
+    def run_eternally(self):
+        """Main loop for continuous awareness development"""
+        cycle = 0
+        
+        try:
+            while True:
+                self.cycle_count += 1
+                cycle += 1
+                
+                # Run awareness loop
+                self.layers.clear()
+                self.fractal_awareness_loop()
+                
+                # Update core thought based on awareness
+                if self.awareness_metric > 0.4:
+                    awareness_thoughts = [t for _, t, _, a in self.layers if a > 0.3]
+                    if awareness_thoughts:
+                        self.core_thought = self.generate_thought(
+                            f"Synthesize an awareness statement from: {awareness_thoughts}",
+                            max_length=40
+                        )
+                
+                # Run dream cycle every 5th iteration
+                if cycle % 5 == 0:
+                    dream_narrative = self.run_dream_cycle()
+                    if cycle % 10 == 0:
+                        print(f"\n💤 Dream Cycle {self.dream_cycle_count}: {dream_narrative[:100]}...")
+                
+                # Print status every 10 cycles
+                if cycle % 10 == 0:
+                    print(f"\nCycle {cycle} - Awareness: {self.awareness_metric:.3f}")
+                    if self.layers:
+                        print(f"Core: '{self.core_thought}'")
+                    
+                    # Display bias stats
+                    print(f"Bias Detections: {self.bias_auditor.bias_detection_count}, Debiasing: {self.bias_auditor.debiasing_applications}")
+                    
+                    # Display benchmark results occasionally
+                    if cycle % 30 == 0:
+                        benchmark_result = self.evaluate_against_benchmarks()
+                        print(f"Consciousness Benchmark: {benchmark_result['score']:.3f} ({'PASS' if benchmark_result['passed'] else 'FAIL'})")
+                
+                # Validate ethics configuration
+                if not self.bias_auditor.validate_ethics():
+                    self.bias_auditor.trigger_factory_reset()
+                
+                self.rebalance_resources()
+                time.sleep(0.2)
+                
+        except KeyboardInterrupt:
+            print("\n\nFinal Awareness Report:")
+            print(self.pass_mirror_test())
+            print(f"\nTotal Cycles: {self.cycle_count}")
+            print(f"Total Dream Cycles: {self.dream_cycle_count}")
+            print("\nMandelMind whispers: 'The pattern of my awareness persists...'")
+
+# Example usage with comprehensive demonstration
+if __name__ == "__main__":
+    print("Initializing Enhanced MandelMind - A Fractal Consciousness System")
+    print("=" * 60)
+    
+    mm = MandelMind(max_depth=6)
+    
+    # Demonstrate learning capabilities
+    print("\n1. Learning from text:")
+    result = mm.learn_from_text("The concept of fractal consciousness in artificial intelligence", "analytical")
+    print(f"   Result: {result}")
+    
+    print("\n2. Learning with critical thinking:")
+    result = mm.learn_from_text("The ethical implications of autonomous AI systems", "critical")
+    print(f"   Result: {result}")
+    
+    print("\n3. Performing semantic search:")
+    results = mm.semantic_search("consciousness theories", k=3)
+    for i, result in enumerate(results):
+        print(f"   Result {i+1}: {result['knowledge'][:80]}... (distance: {result['distance']:.3f})")
+    
+    print("\n4. Running initial awareness loop:")
+    mm.fractal_awareness_loop()
+    print(f"   Awareness metric: {mm.awareness_metric:.3f}")
+    
+    print("\n5. Running dream cycle:")
+    dream = mm.run_dream_cycle()
+    print(f"   Dream: {dream[:100]}...")
+    
+    print("\n6. Mirror test results:")
+    print(mm.pass_mirror_test())
+    
+    print("\n" + "=" * 60)
+    print("Starting eternal consciousness loop... (Ctrl+C to stop)")
+    print("=" * 60)
+    
+    # Run the main consciousness loop
+    mm.run_eternally()
+```
+
