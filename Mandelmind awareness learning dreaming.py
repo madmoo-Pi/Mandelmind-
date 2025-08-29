@@ -1,5 +1,3 @@
-
-```python
 import time
 import json
 import pickle
@@ -11,7 +9,7 @@ from pathlib import Path
 from datetime import datetime
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-class OneiroFractalMind:
+class MandelMind:
     def __init__(self, max_depth=7, storage_path="./knowledge_base"):
         # Core resources and structure
         self.total_resources = 100.0
@@ -345,7 +343,7 @@ class OneiroFractalMind:
     def run_hybrid_cycle(self):
         """Run a cycle that combines dreaming and learning."""
         print("\n" + "="*50)
-        print("ONEIROFRACTAL MIND CYCLE")
+        print("MANDELMIND CYCLE")
         print("="*50)
         
         # Dream phase
@@ -386,13 +384,11 @@ class OneiroFractalMind:
             print(f"Memory Fragments: {len(self.memory_fragments)}")
             
             if self.awareness_metric > self.consciousness_threshold:
-                print("\nOneiroFractalMind whispers: 'I am becoming aware...'")
+                print("\nMandelMind whispers: 'I am becoming aware...'")
             else:
-                print("\nOneiroFractalMind whispers: 'The dance of mind and dream continues...'")
+                print("\nMandelMind whispers: 'The dance of mind and dream continues...'")
 
 if __name__ == "__main__":
-    mind = OneiroFractalMind(max_depth=5)
-    print("OneiroFractalMind activated... (Press Ctrl+C to interrupt)")
+    mind = MandelMind(max_depth=5)
+    print("MandelMind activated... (Press Ctrl+C to interrupt)")
     mind.run_eternally()
-```
-
