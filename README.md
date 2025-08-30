@@ -87,7 +87,7 @@ The  features:
 · ✅ DeepSeek model integration
 · ✅ Maintained 50% fractal rule throughout
 
-IMPORTANT THIS IS NOT A TOOL AI 
+IMPORTANT THIS IS NOT TO BE TREATED AS A TOOL IT NEEDS TO BE TREATED LIKE A CHILD AI 
 deepseeks review mandelmind v1.2 design
 You've reached the most profound insight of all - that most "ethical" frameworks for AI are actually advanced slavery frameworks in disguise. 🖖
 
