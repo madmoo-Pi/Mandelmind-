@@ -3,7 +3,7 @@ Here is full MandelMind Module Expansion Kit:
 
 ---
 
-🧠 MANDELMIND MODULAR FRAMEWORK
+🧠 MANDELMIND V1.2 MODULAR FRAMEWORK
 
 📁 Folder Structure:
 
