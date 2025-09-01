@@ -507,7 +507,8 @@ This tool is for **scientific exploration only**. Please use responsibly, with a
 
 ## License
 
-**CC-0 Public Domain** — No restrictions.
+mandelmind **CC-0 Public Domain** — No restrictions
+mandelmind V1.1 + V1.2 **MIT roghts reseved** research only
 
 🚨🚨 SANDBOX YOUR SANDBOX 🚨🚨
 i am not responsible for people who dont know what they are doing 
