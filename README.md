@@ -28,4 +28,4 @@ mandelmind from this fileset **CC-0 Public Domain** — No restrictions
 
 🚨🚨 SANDBOX YOUR SANDBOX 🚨🚨
 i am not responsible for people who dont know what they are doing 
-
+it is recommended to use this mandelmind module with the ethical bias elimination system to guide safe use https://github.com/madmoo-Pi/Ai-bias-elimination-/tree/main
